@@ -6,7 +6,8 @@ class Facerecognition:
 
     def __init__(self, came, cascade_path):
         self.video = cv.VideoCapture(came)
-        self.cascade_path = cv.CascadeClassifier(cv.data.haarcascades + cascade_path)
+        self.cascade_path = cv.CascadeClassifier(cv.data.haarcascades + cascade_path) # type: ignore
+        self.frames = []
 
     def video_capture_gray(self, file_name, show=False):
         while True:
@@ -25,7 +26,8 @@ class Facerecognition:
         self.video.release()
         cv.destroyAllWindows()
 
-    def video_show_face(self):
+    def video_show_face(self,recognition):
+      if recognition == 1:  
         while True:
             ret, frame = self.video.read()
             if not ret:
@@ -55,4 +57,4 @@ class Facerecognition:
 
 if __name__ == "__main__":
     fr = Facerecognition(0, "haarcascade_frontalface_default.xml")
-    fr.video_show_face()
+    fr.video_show_face(1)

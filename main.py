@@ -5,9 +5,9 @@ class Facerecognition:
     'cascade for recognition of face or eye or object or more'
     def __init__(self,came,cascade_path):
         self.video = cv.VideoCapture(came)
-        self.cascade_path = cv.CascadeClassifier(cv.data.haarcascades + cascade_path)
+        self.cascade_path = cv.CascadeClassifier(cv.data.haarcascades + cascade_path) # type:ignore
 
-        pictures = []
+        self.pictures = []
 
     def video_capture_gray(self,file_name,show = False):
         while True:
@@ -31,8 +31,10 @@ class Facerecognition:
     def video_show_face(self):
          while True:
              ret,frame = self.video.read()
+              
              if ret:
                  gray = cv.cvtColor(frame,cv.COLOR_BGR2GRAY)
+                 self.pictures.append(gray)
 
                  face = self.cascade_path.detectMultiScale(gray,1.1,5,minSize=(20,20))
 
@@ -46,7 +48,7 @@ class Facerecognition:
                         color : any
                         pix  : smaller recommonded
                      '''
-                     cv.putText(frame,"face detected",(x,y -20),cv.FONT_HERSHEY_SIMPLEX,0.82,(255,0,0),2)
+                     cv.putText(frame,"face detected",(x,y -20),cv.FONT_HERSHEY_SIMPLEX,0.82,(255,0,0),2,cv.LINE_AA)
                     
                 
                  cv.imshow("image",frame)
@@ -59,10 +61,17 @@ class Facerecognition:
                  
          self.video.release()
          cv.destroyAllWindows()
-            
+
+    def pictures_(self):
+        print(self.pictures)
+
+
 if __name__ == "__main__":
-    fr = Facerecognition(0,"haarcascade_frontalface_default.xml")
-    fr.video_show_face()        
+    camera = input("0 or 1")
+    cascade = input("Enter cascade xml :")
+    fr = Facerecognition(camera,cascade) #"haarcascade_frontalface_default.xml"
+    # fr.video_show_face()        
+    fr.pictures_()
 
 
                  
